@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './api' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
 
 jobs:
@@ -29,7 +29,6 @@ jobs:
         shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          cd api
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -38,7 +37,7 @@ jobs:
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
-        with:
+        with:  
           app-name: 'products0506'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
